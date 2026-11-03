@@ -12,6 +12,7 @@ HTML, CSS and a little JavaScript, served straight from GitHub Pages.
 | `css/styles.css` | All styling. The colour palette lives in the `:root` block at the top |
 | `js/scripts.js` | Countdown, mobile menu, scroll reveals, "add to calendar" |
 | `assets/imgs/` | Photographs |
+| `print/` | The printable 5×7 invitation — see [print/README.md](print/README.md) |
 | `.claude/launch.json` | Local preview config (harmless to keep, harmless to delete) |
 
 ## Editing the usual things
@@ -49,7 +50,6 @@ can be edited in place; each one is a `<symbol>` near the top of the file.
 ## Still to fill in
 
 - The "Our story" paragraphs are placeholder copy — worth rewriting in your own words
-- Accommodation suggestions in the "Staying over" card
 - What to say about gifts, in the note below the detail cards
 - A nicer photo for the social-media preview (`og:image` in `<head>`), if you want
   one that isn't the engagement picture

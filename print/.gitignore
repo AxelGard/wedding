@@ -1,0 +1,4 @@
+# Rebuilt by setup.sh — not worth committing
+.venv/
+.fonts/
+__pycache__/
