@@ -68,7 +68,6 @@ area, so you will know before it reaches the printer.
 - **Publish the website first.** The QR code points at
   `https://axelgard.github.io/wedding/`. It is verified to encode that exact
   URL, but the page has to actually exist by the time the cards go out.
-- **Set a real RSVP deadline.** `RSVP_BY` is currently a placeholder.
 - **The cards are in Swedish, the website is still in English.** Worth making
   those match one way or the other before the invitations go out.
 - **Order one proof copy** before the full run, and check the colour. Printed

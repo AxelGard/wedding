@@ -66,13 +66,13 @@ DETAILS = [
      "Middag och dans följer på samma plats."),
     ("ico-bus", "Bussen",
      "En buss avgår från Norrköpings centralstation klockan 14:35 och\n"
-     "kör tillbaka alla när festen är slut. Säg till om ni vill ha plats."),
+     "kör tillbaka alla när festen är slut. Anmäl plats i OSA:n."),
     ("ico-bed", "Boende",
      "Vi rekommenderar Strand Hotell. Boka direkt på 011-169900\n"
      "eller info@hotellstrand.se och få 20 % rabatt för en natt,\n"
      "eller halva priset på andra natten. Begränsat antal rum."),
     ("ico-dress", "Klädkod",
-     "Mörk kostym"),
+     "Mörk kostym. Gärna i höstens färger, men det är inget krav."),
 ]
 
 OSA_LABEL = "OSA"
