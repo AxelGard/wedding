@@ -9,7 +9,8 @@
        Month is 0-indexed: 8 = September. Local time.                        */
     var WEDDING = new Date(2027, 8, 4, 15, 30, 0);
 
-    /* --------------------------------------------------------- countdown -- */
+    /* --------------------------------------------------------- countdown --
+       Counts down to the ceremony, then flips round and counts up from it.  */
     var board = document.getElementById("countdown");
     if (board) {
         var slots = {};
@@ -17,17 +18,25 @@
             slots[unit] = board.querySelector('[data-unit="' + unit + '"]');
         });
 
+        var married = false;
+        var marry = function () {
+            married = true;
+            board.setAttribute("aria-label", "Time since the wedding");
+
+            var kicker = document.querySelector(".hero__kicker");
+            if (kicker) { kicker.textContent = "We got married"; }
+
+            var caption = document.createElement("p");
+            caption.className = "countdown__caption";
+            caption.textContent = "since we said \u201cI do\u201d";
+            board.insertAdjacentElement("afterend", caption);
+        };
+
         var tick = function () {
-            var left = WEDDING - new Date();
+            var diff = WEDDING - new Date();
+            if (diff <= 0 && !married) { marry(); }
 
-            if (left <= 0) {
-                board.innerHTML = '<li class="countdown__done"><b>Today</b>' +
-                                  "<small>At last</small></li>";
-                clearInterval(timer);
-                return;
-            }
-
-            var s = Math.floor(left / 1000);
+            var s = Math.floor(Math.abs(diff) / 1000);
             var pad = function (n) { return n < 10 ? "0" + n : String(n); };
 
             slots.days.textContent    = Math.floor(s / 86400);
@@ -37,7 +46,7 @@
         };
 
         tick();
-        var timer = setInterval(tick, 1000);
+        setInterval(tick, 1000);
     }
 
     /* -------------------------------------------------------- mobile nav -- */

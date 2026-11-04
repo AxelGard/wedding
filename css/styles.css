@@ -731,9 +731,14 @@ a:hover { color: var(--bark); }
     margin: 0 0 clamp(0.75rem, 2vw, 1.25rem);
 }
 
-/* Countdown, once the day arrives */
-.countdown__done { min-width: 12rem; }
-.countdown__done b { font-size: clamp(2rem, 1.2rem + 3vw, 3rem); color: var(--rust); }
+/* Countdown, once it has flipped to counting up */
+.countdown__caption {
+    margin: 0.9rem 0 0;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--rust);
+}
 
 /* Give the hero a little more room under the lights */
 .hero { padding-top: clamp(5rem, 11vw, 8rem); }
@@ -827,7 +832,7 @@ body::after {
 }
 
 @media print {
-    .nav, .countdown, .rsvp__actions { display: none; }
+    .nav, .countdown, .countdown__caption, .rsvp__actions { display: none; }
     body { background: #fff; }
     .section { padding-block: 1.5rem; }
 }
