@@ -1,6 +1,6 @@
 # Juandré & Axel — wedding site
 
-A single static page for our wedding on **Saturday 4 September 2027, 15:00** at
+A single static page for our wedding on **Saturday 4 September 2027, 15:30** at
 Kanalmagasinet, Mem, Söderköping. No build step, no dependencies — hand-written
 HTML, CSS and a little JavaScript, served straight from GitHub Pages.
 
@@ -20,7 +20,7 @@ HTML, CSS and a little JavaScript, served straight from GitHub Pages.
 **The date or time** — one line, `js/scripts.js`:
 
 ```js
-var WEDDING = new Date(2027, 8, 4, 15, 0, 0);   // month is 0-indexed: 8 = September
+var WEDDING = new Date(2027, 8, 4, 15, 30, 0);   // month is 0-indexed: 8 = September
 ```
 
 Then update the date text in `index.html` (the hero, the RSVP section and the

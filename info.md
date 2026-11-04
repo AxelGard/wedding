@@ -5,7 +5,7 @@
 ## Info 
 
 Juandré and Axel are getting married!
-The wedding will take place on the 4th of September 2027 at 15:00.
+The wedding will take place on the 4th of September 2027 at 15:30.
 It will be at kanalmagasinet. 
 Address: Mem Kanalmagasinet 1, 614 92 Söderköping
 Google Maps link: [kanalmagasinet](https://maps.app.goo.gl/ngjjAZKd5CARR85v7)

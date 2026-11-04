@@ -46,7 +46,7 @@ NAME_B = "Axel"
 WELCOME = "Välkommen till vårt bröllop"
 
 DATE_WORDS = ["Lördagen den 4 september 2027",
-              "klockan 15:00"]
+              "klockan 15:30"]
 
 VENUE = "KANALMAGASINET"
 VENUE_ADDR = "Mem Kanalmagasinet 1 · 614 92 Söderköping"
@@ -62,7 +62,7 @@ BACK_TITLE = "PRAKTISK INFORMATION"
 
 DETAILS = [
     ("ico-arch", "Vigseln",
-     "Klockan 15:00 på Kanalmagasinet i Mem.\n"
+     "Klockan 15:30 på Kanalmagasinet i Mem.\n"
      "Middag och dans följer på samma plats."),
     ("ico-bus", "Bussen",
      "En buss avgår från Norrköpings centralstation klockan 14:35 och\n"

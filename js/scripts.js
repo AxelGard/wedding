@@ -7,7 +7,7 @@
     /* ------------------------------------------------------- the big date --
        Change this one line if the time or date moves.
        Month is 0-indexed: 8 = September. Local time.                        */
-    var WEDDING = new Date(2027, 8, 4, 15, 0, 0);
+    var WEDDING = new Date(2027, 8, 4, 15, 30, 0);
 
     /* --------------------------------------------------------- countdown -- */
     var board = document.getElementById("countdown");
@@ -141,7 +141,7 @@
             "DTSTART:" + stamp(WEDDING),
             "DTEND:" + stamp(end),
             "SUMMARY:Juandré & Axel are getting married",
-            "DESCRIPTION:Ceremony at 15:00\\, then dinner and dancing. Details at " +
+            "DESCRIPTION:Ceremony at 15:30\\, then dinner and dancing. Details at " +
                 window.location.href,
             "LOCATION:Kanalmagasinet\\, Mem Kanalmagasinet 1\\, 614 92 Söderköping",
             "END:VEVENT",
