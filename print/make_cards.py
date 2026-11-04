@@ -82,17 +82,19 @@ OSA_NOTE = ["Skanna koden eller skriv in adressen."]
 
 
 # ================================================================== palette ==
-# RGB values taken from the website's :root block, converted to CMYK for
-# print. Very light tints drop their black plate so large flat areas of
-# cream cannot band.
+# Started from the website's :root block, then pushed richer for print:
+# wine-brown text, maroon accents, sage leaves and a warmer gold. The
+# website's originals are in the comments. Converted to CMYK for print;
+# very light tints drop their black plate so large flat areas of cream
+# cannot band.
 
 RGB = {
-    "bark":       (0x4a, 0x38, 0x2c),
-    "bark_soft":  (0x6b, 0x55, 0x46),
-    "olive":      (0x9e, 0x9f, 0x77),
-    "olive_deep": (0x6a, 0x6c, 0x4a),
-    "rust":       (0xa8, 0x4c, 0x30),
-    "gold":       (0xc0, 0xa0, 0x6b),
+    "bark":       (0x4e, 0x22, 0x28),   # site: 4a382c
+    "bark_soft":  (0x6c, 0x44, 0x45),   # site: 6b5546
+    "olive":      (0x6f, 0x93, 0x58),   # site: 9e9f77
+    "olive_deep": (0x48, 0x68, 0x38),   # site: 6a6c4a
+    "rust":       (0x80, 0x18, 0x34),   # site: a84c30
+    "gold":       (0xc4, 0x96, 0x4e),   # site: c0a06b
     "ivory":      (0xfd, 0xf9, 0xf2),
     "linen":      (0xf5, 0xec, 0xe0),
 }
@@ -118,7 +120,7 @@ CREAMS = {
 }
 CREAMS = {k: tuple(v / 255.0 for v in c) for k, c in CREAMS.items()}
 
-CARD_BG = CREAMS["shell"]
+CARD_BG = CREAMS["cream"]
 
 
 def cmyk(rgb):
@@ -256,19 +258,19 @@ def front(c):
 
     # Corner greenery, bled off two opposite corners
     art(c, "ill-spray", (TX - 1.05 * INCH, PAGE_H - 2.5 * INCH, 2.9 * INCH, 2.9 * INCH),
-        RGB["olive"], bg, opacity=0.42, stroke_scale=0.9)
+        RGB["olive"], bg, opacity=0.92, stroke_scale=0.9)
     c.saveState()
     c.translate(PAGE_W, 0)
     c.scale(-1, 1)
     art(c, "ill-spray", (TX - 1.3 * INCH, -0.25 * INCH, 2.25 * INCH, 2.25 * INCH),
-        RGB["olive"], bg, opacity=0.32, stroke_scale=0.9)
+        RGB["olive"], bg, opacity=0.70, stroke_scale=0.9)
     c.restoreState()
 
     # Wreath with the monogram set inside it
     wreath = 1.62 * INCH
     wy = SY + SH - wreath - 0.34 * INCH
     art(c, "ill-wreath", (CX - wreath / 2, wy, wreath, wreath),
-        RGB["olive_deep"], bg, opacity=0.95, stroke_scale=0.85)
+        RGB["olive_deep"], bg, opacity=1.0, stroke_scale=0.85)
 
     mid = wy + wreath / 2.0
     c.setFont("Cormorant-Reg", 26)
@@ -303,7 +305,7 @@ def front(c):
     y -= 0.4 * INCH
     div = 1.55 * INCH
     art(c, "ill-divider", (CX - div / 2, y - 0.1 * INCH, div, 0.26 * INCH),
-        RGB["olive"], bg, opacity=0.85, stroke_scale=1.15)
+        RGB["olive"], bg, opacity=1.0, stroke_scale=1.15)
 
     y -= 0.54 * INCH
     y = block(c, DATE_WORDS, y, "Cormorant", 15.5, RGB["bark_soft"], 0.27 * INCH)
@@ -325,7 +327,7 @@ def back(c):
     c.translate(PAGE_W, 0)
     c.scale(-1, 1)
     art(c, "ill-sprig", (-0.5 * INCH, -0.42 * INCH, 1.85 * INCH, 2.0 * INCH),
-        RGB["olive"], bg, opacity=0.28, stroke_scale=0.9)
+        RGB["olive"], bg, opacity=0.62, stroke_scale=0.9)
     c.restoreState()
 
     y = SY + SH - 0.2 * INCH
@@ -336,7 +338,7 @@ def back(c):
     y -= 0.2 * INCH
     div = 1.3 * INCH
     art(c, "ill-divider", (CX - div / 2, y - 0.16 * INCH, div, 0.22 * INCH),
-        RGB["olive"], bg, opacity=0.8, stroke_scale=1.2)
+        RGB["olive"], bg, opacity=1.0, stroke_scale=1.2)
 
     # --- the detail blocks ---
     y -= 0.42 * INCH

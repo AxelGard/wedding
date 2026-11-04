@@ -48,11 +48,18 @@ builds even when nothing has changed, `make preview` builds and opens the PDF,
 `print/.fonts`, pinning the two variable fonts to fixed weights. Neither
 directory is committed; the script rebuilds both from scratch.
 
-## Background colour
+## Colours
 
-Both faces share one ground, set by `CARD_BG` near the top of `make_cards.py`.
-It is the warm cream (`--linen`) at the moment; switch it to `RGB["ivory"]` for
-the lighter, near-white version.
+The card is deliberately a little richer than the website: wine-brown text,
+maroon accents, sage-green leaves and a warmer gold. The values live in the
+`RGB` block near the top of `make_cards.py`, each with the website's original
+in a comment, so it is easy to step back towards the site's palette.
+
+Both faces share one ground, set by `CARD_BG`. It is `CREAMS["cream"]`, a
+warm golden cream; the `CREAMS` comment lists lighter and less yellow options.
+
+How strongly the leaves print is the `opacity=` on each `art(...)` call in
+`front()` and `back()`. The corner sprays sit between 0.6 and 0.9.
 
 ## Changing the wording
 
