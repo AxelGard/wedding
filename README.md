@@ -50,7 +50,7 @@ can be edited in place; each one is a `<symbol>` near the top of the file.
 ## Still to fill in
 
 - The "Our story" paragraphs are placeholder copy — worth rewriting in your own words
-- What to say about gifts, in the note below the detail cards
+- The wedding registry link and Swish number, in the "On gifts" note below the detail cards
 - A nicer photo for the social-media preview (`og:image` in `<head>`), if you want
   one that isn't the engagement picture
 
