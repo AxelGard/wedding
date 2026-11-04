@@ -13,9 +13,10 @@ Google Maps link: [kanalmagasinet](https://maps.app.goo.gl/ngjjAZKd5CARR85v7)
 The [RSVP Form](https://docs.google.com/forms/d/e/1FAIpQLScWLeyVYdrSvrk8iayJ0b12E_IUbrpNWL4SmAnotZX5NyKdwg/viewform?usp=publish-editor)
 
 
-There will be a buss leaving from Norrköping at 14:00 and returning after the wedding. 
-The bus will pick up guests at:
-[Strand Hotell](https://maps.app.goo.gl/3yMg2rR4Uwx3ksNV8)
+There will be a buss leaving from Norrköping at 14:35 and returning after the wedding. 
+The bus will pick up guests at Norrköping Centralstation.
+
+Recommended hotel: [Strand Hotell](https://maps.app.goo.gl/3yMg2rR4Uwx3ksNV8)
 
 The wedding will be followed by a dinner and party at the same location, kanalmagasinet.
 

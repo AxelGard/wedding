@@ -57,20 +57,20 @@ QR_URL = "https://axelgard.github.io/wedding/"
 # !! CHECK THIS BEFORE ORDERING — pick a real reply-by date.
 RSVP_BY = "1 juni 2027"
 
-BACK_LABEL = "PRAKTISK INFORMATION"
-BACK_TITLE = "Det ni behöver veta"
+BACK_LABEL = ""
+BACK_TITLE = "PRAKTISK INFORMATION"
 
 DETAILS = [
     ("ico-arch", "Vigseln",
      "Klockan 15:00 på Kanalmagasinet i Mem.\n"
      "Middag och dans följer på samma plats."),
     ("ico-bus", "Bussen",
-     "En buss avgår från Strand Hotell i Norrköping\n"
-     "klockan 14:00 och kör tillbaka alla när festen\n"
-     "är slut. Säg till om ni vill ha plats.\n"
-     "Bo gärna på Strand Hotell och boka direkt på\n"
-     "011-169900 eller info@hotellstrand.se: 20 % rabatt\n"
-     "för en natt, halva priset på andra natten."),
+     "En buss avgår från Norrköpings centralstation klockan 14:35 och\n"
+     "kör tillbaka alla när festen är slut. Säg till om ni vill ha plats."),
+    ("ico-bed", "Boende",
+     "Vi rekommenderar Strand Hotell. Boka direkt på 011-169900\n"
+     "eller info@hotellstrand.se och få 20 % rabatt för en natt,\n"
+     "eller halva priset på andra natten. Begränsat antal rum."),
     ("ico-dress", "Klädkod",
      "Mörk kostym"),
 ]
@@ -328,7 +328,7 @@ def back(c):
         RGB["olive"], bg, opacity=0.28, stroke_scale=0.9)
     c.restoreState()
 
-    y = SY + SH - 0.3 * INCH
+    y = SY + SH - 0.2 * INCH
     text(c, BACK_LABEL, y, "Jost", 8, RGB["olive_deep"], tracking=3.2)
     y -= 0.42 * INCH
     text(c, BACK_TITLE, y, "Cormorant", 26, RGB["bark"])
@@ -338,8 +338,8 @@ def back(c):
     art(c, "ill-divider", (CX - div / 2, y - 0.16 * INCH, div, 0.22 * INCH),
         RGB["olive"], bg, opacity=0.8, stroke_scale=1.2)
 
-    # --- the three detail blocks ---
-    y -= 0.52 * INCH
+    # --- the detail blocks ---
+    y -= 0.42 * INCH
     icon = 0.3 * INCH
     text_x = SX + 0.52 * INCH
 
@@ -352,10 +352,10 @@ def back(c):
         for line in body.split("\n"):
             text(c, line, ly, "Jost", 8.3, RGB["bark_soft"], align="l", x=text_x)
             ly -= 0.165 * INCH
-        y = ly - 0.4 * INCH
+        y = ly - 0.32 * INCH
 
     # --- RSVP, with the QR code ---
-    y = SY + 2.16 * INCH
+    y = SY + 2.0 * INCH
     rule(c, y, SW, RGB["gold"], 0.5, x=SX)
     y -= 0.42 * INCH
 

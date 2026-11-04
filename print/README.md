@@ -35,9 +35,14 @@ includes bleed, say yes.
 ## Rebuilding
 
 ```bash
-./print/setup.sh
-print/.venv/bin/python print/make_cards.py
+cd print
+make
 ```
+
+`make` only rebuilds when `make_cards.py`, `svgpath.py` or `../index.html` has
+changed, and runs `setup.sh` automatically the first time. `make rebuild`
+builds even when nothing has changed, `make preview` builds and opens the PDF,
+`make setup` reinstalls the toolchain, `make clean` removes the PDFs.
 
 `setup.sh` creates `print/.venv` and downloads the three Google fonts into
 `print/.fonts`, pinning the two variable fonts to fixed weights. Neither
