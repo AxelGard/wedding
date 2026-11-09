@@ -25,7 +25,7 @@ site, re-run the build, and the cards follow.
 | Colour | CMYK throughout, no RGB |
 | Transparency | None — everything is flattened to opaque fills |
 | Images | None — 100% vector, so it is sharp at any size |
-| Fonts | Embedded as subsets (Cormorant Garamond, Jost, Parisienne) |
+| Fonts | None — all text is converted to vector outlines (Cormorant Garamond, Jost, Parisienne) |
 | Language | Swedish |
 
 On Vistaprint, choose **Invitations & Announcements → 5×7 flat, printed both

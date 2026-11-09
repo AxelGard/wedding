@@ -24,6 +24,8 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 
+from fontTools.pens.basePen import BasePen
+from fontTools.ttLib import TTFont as FTFont
 import segno
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -58,7 +60,7 @@ QR_URL = "https://axelgard.github.io/wedding/"
 RSVP_BY = "1 juni 2027"
 
 BACK_LABEL = ""
-BACK_TITLE = "PRAKTISK INFORMATION"
+BACK_TITLE = ""
 
 DETAILS = [
     ("ico-arch", "Vigseln",
@@ -66,17 +68,17 @@ DETAILS = [
      "Middag och dans följer på samma plats."),
     ("ico-bus", "Bussen",
      "En buss avgår från Norrköpings centralstation klockan 14:35 och\n"
-     "kör tillbaka alla när festen är slut. Anmäl plats i OSA:n."),
+     "kör tillbaka alla när festen är slut. Plats bokas i OSA:n på hemsidan."),
     ("ico-bed", "Boende",
-     "Vi rekommenderar Strand Hotell. Boka direkt på 011-169900\n"
+     "Vi rekommenderar Strand Hotell i Norrköping. Boka direkt på 011-169900\n"
      "eller info@hotellstrand.se och få 20 % rabatt för en natt,\n"
      "eller halva priset på andra natten. Begränsat antal rum."),
     ("ico-dress", "Klädkod",
-     "Mörk kostym. Gärna i höstens färger, men det är inget krav."),
+     "Mörk kostym"),
 ]
 
-OSA_LABEL = "OSA"
-OSA_LINE = "Svara senast " + RSVP_BY
+OSA_LABEL = "OSA på hemsidan"
+OSA_LINE = "Svara senast " + RSVP_BY 
 OSA_INFO = "För mer information kan ni besöka vår hemsida"
 OSA_NOTE = ["Skanna koden eller skriv in adressen."]
 
@@ -168,7 +170,59 @@ def register_fonts():
         sys.exit("Fonts are not set up yet — run print/setup.sh first.\n"
                  "Missing: " + ", ".join(missing))
     for name, filename in faces.items():
-        pdfmetrics.registerFont(TTFont(name, os.path.join(FONTS, filename)))
+        path = os.path.join(FONTS, filename)
+        # Registered with ReportLab for measuring only; nothing is drawn as
+        # PDF text, see outline() below.
+        pdfmetrics.registerFont(TTFont(name, path))
+        OUTLINES[name] = FTFont(path)
+
+
+# ================================================================ outlines ===
+# Every letter is drawn as a filled vector path rather than as PDF text, so
+# the file contains no fonts at all. Vistaprint's upload check rejected the
+# embedded TrueType subsets ("Bädda in alla teckensnitt"); outlined text is
+# what print shops ask for anyway and looks identical.
+
+OUTLINES = {}
+
+
+class _PathPen(BasePen):
+    """Feeds fontTools glyph outlines into a ReportLab path, scaled and moved."""
+
+    def __init__(self, glyphset, path, x, y, scale):
+        BasePen.__init__(self, glyphset)
+        self.p, self.x, self.y, self.k = path, x, y, scale
+
+    def _pt(self, pt):
+        return self.x + pt[0] * self.k, self.y + pt[1] * self.k
+
+    def _moveTo(self, pt):
+        self.p.moveTo(*self._pt(pt))
+
+    def _lineTo(self, pt):
+        self.p.lineTo(*self._pt(pt))
+
+    def _curveToOne(self, p1, p2, p3):
+        self.p.curveTo(*(self._pt(p1) + self._pt(p2) + self._pt(p3)))
+
+    def _closePath(self):
+        self.p.close()
+
+
+def outline(c, s, x, y, font, size, tracking=0.0):
+    """Draw s as filled outlines in the current fill colour. Advances match
+    ReportLab's stringWidth, so measuring and layout are unchanged."""
+    ft = OUTLINES[font]
+    cmap = ft.getBestCmap()
+    glyphs = ft.getGlyphSet()
+    hmtx = ft["hmtx"]
+    k = size / float(ft["head"].unitsPerEm)
+    path = c.beginPath()
+    for ch in s:
+        name = cmap.get(ord(ch), ".notdef")
+        glyphs[name].draw(_PathPen(glyphs, path, x, y, k))
+        x += hmtx[name][0] * k + tracking
+    c.drawPath(path, stroke=0, fill=1, fillMode=0)   # 0 = non-zero winding
 
 
 # ================================================================= artwork ===
@@ -219,14 +273,7 @@ def text(c, s, y, font, size, color, tracking=0.0, align="c", x=None, leading=No
         OVERSET.append((s, (left + w - SX) / INCH, SW / INCH))
 
     c.setFillColor(cmyk(color))
-    t = c.beginText(left, y)
-    t.setFont(font, size)
-    # Always set it, including to zero: Tc is part of the PDF text state and
-    # persists across BT/ET, so skipping the reset leaks tracking onto every
-    # later line.
-    t.setCharSpace(tracking)
-    t.textOut(s)
-    c.drawText(t)
+    outline(c, s, left, y, font, size, tracking)
     return w
 
 
@@ -273,23 +320,18 @@ def front(c):
         RGB["olive_deep"], bg, opacity=1.0, stroke_scale=0.85)
 
     mid = wy + wreath / 2.0
-    c.setFont("Cormorant-Reg", 26)
     c.setFillColor(cmyk(RGB["olive_deep"]))
     jw = c.stringWidth("J", "Cormorant-Reg", 26)
     aw = c.stringWidth("A", "Cormorant-Reg", 26)
-    c.setFont("Script", 18)
     amp = c.stringWidth("&", "Script", 18)
     gap = 5
     total = jw + gap + amp + gap + aw
     x = CX - total / 2.0
-    c.setFont("Cormorant-Reg", 26)
-    c.drawString(x, mid - 8.5, "J")
-    c.setFont("Script", 18)
+    outline(c, "J", x, mid - 8.5, "Cormorant-Reg", 26)
     c.setFillColor(cmyk(RGB["rust"]))
-    c.drawString(x + jw + gap, mid - 7.5, "&")
-    c.setFont("Cormorant-Reg", 26)
+    outline(c, "&", x + jw + gap, mid - 7.5, "Script", 18)
     c.setFillColor(cmyk(RGB["olive_deep"]))
-    c.drawString(x + jw + gap + amp + gap, mid - 8.5, "A")
+    outline(c, "A", x + jw + gap + amp + gap, mid - 8.5, "Cormorant-Reg", 26)
 
     y = wy - 0.3 * INCH
     text(c, WELCOME, y, "Cormorant", 15, RGB["bark_soft"])
