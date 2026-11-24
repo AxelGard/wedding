@@ -264,7 +264,7 @@ a:hover { color: var(--bark); }
 
 .nav__links .btn { color: var(--btn-fg); }
 .nav__links .btn::after { display: none; }
-.nav__cta { padding: 0.6rem 1.45rem; font-size: 0.7rem; }
+.nav__links .nav__cta { padding: 1rem 2rem; font-size: 0.875rem; }
 
 .nav__toggle {
     display: none;
@@ -724,7 +724,7 @@ a:hover { color: var(--bark); }
 }
 
 .hero__kicker {
-    font-size: 0.72rem;
+    font-size: 0.95rem;
     letter-spacing: 0.4em;
     text-transform: uppercase;
     color: var(--olive-deep);
