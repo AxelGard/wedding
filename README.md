@@ -12,7 +12,7 @@ HTML, CSS and a little JavaScript, served straight from GitHub Pages.
 | `css/styles.css` | All styling. The colour palette lives in the `:root` block at the top |
 | `js/scripts.js` | Countdown, mobile menu, scroll reveals, "add to calendar" |
 | `assets/imgs/` | Photographs |
-| `print/` | The printable 5×7 invitation — see [print/README.md](print/README.md) |
+| `print/` | The printable 12 × 18.5 cm invitation — see [print/README.md](print/README.md) |
 | `.claude/launch.json` | Local preview config (harmless to keep, harmless to delete) |
 
 ## Editing the usual things

@@ -1,6 +1,6 @@
 # Printable invitation
 
-A 5×7" invitation, printed both sides, set up for Vistaprint.
+A 12 × 18.5 cm invitation, printed both sides, set up for Vistaprint.
 
 The botanical artwork is not duplicated here — `make_cards.py` reads the
 `<symbol>` definitions straight out of `../index.html`, so the cards and the
@@ -11,25 +11,25 @@ site, re-run the build, and the cards follow.
 
 | File | Use |
 | --- | --- |
-| `invitation-5x7.pdf` | Both sides, page 1 = front, page 2 = back. Start here. |
-| `invitation-5x7-front.pdf` | Front only, if the uploader asks per side |
-| `invitation-5x7-back.pdf` | Back only |
+| `invitation.pdf` | Both sides, page 1 = front, page 2 = back. Start here. |
+| `invitation-front.pdf` | Front only, if the uploader asks per side |
+| `invitation-back.pdf` | Back only |
 
 ## Print specification
 
 | | |
 | --- | --- |
-| Trim size | 5 × 7 in (127 × 178 mm) |
-| Document size | 5.25 × 7.25 in — includes 0.125 in bleed on all four edges |
-| Safety margin | 0.25 in inside the trim; nothing readable crosses it |
+| Trim size | 12 × 18.5 cm |
+| Document size | 12.6 × 19.1 cm — includes 3 mm bleed on all four edges |
+| Safety margin | 6 mm inside the trim; nothing readable crosses it |
 | Colour | CMYK throughout, no RGB |
 | Transparency | None — everything is flattened to opaque fills |
 | Images | None — 100% vector, so it is sharp at any size |
 | Fonts | None — all text is converted to vector outlines (Cormorant Garamond, Jost, Parisienne) |
 | Language | Swedish |
 
-On Vistaprint, choose **Invitations & Announcements → 5×7 flat, printed both
-sides**, then "Upload your complete design". When it asks whether your file
+On Vistaprint, choose the 12 × 18.5 cm flat invitation, printed both sides,
+then upload your complete design. When it asks whether your file
 includes bleed, say yes.
 
 ## Rebuilding

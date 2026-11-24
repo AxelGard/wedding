@@ -2,8 +2,8 @@
 """
 Build the printable wedding invitation.
 
-Produces a single 5x7" card, double sided, set up for Vistaprint:
-0.125" bleed on every edge and a 0.25" safety margin inside the trim.
+Produces a single 12 x 18.5 cm card, double sided, set up for Vistaprint:
+3 mm bleed on every edge and a 6 mm safety margin inside the trim.
 
 The botanical artwork is read straight out of ../index.html, so the cards and
 the website are literally drawing the same illustrations. Change the art there
@@ -34,9 +34,9 @@ import svgpath
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 FONTS = os.path.join(HERE, ".fonts")
-OUT = os.path.join(HERE, "invitation-5x7.pdf")
-OUT_FRONT = os.path.join(HERE, "invitation-5x7-front.pdf")
-OUT_BACK = os.path.join(HERE, "invitation-5x7-back.pdf")
+OUT = os.path.join(HERE, "invitation.pdf")
+OUT_FRONT = os.path.join(HERE, "invitation-front.pdf")
+OUT_BACK = os.path.join(HERE, "invitation-back.pdf")
 
 
 # ===================================================================== copy ==
@@ -62,16 +62,17 @@ RSVP_BY = "1 juni 2027"
 BACK_LABEL = ""
 BACK_TITLE = ""
 
+# Each body is wrapped to the column automatically.
 DETAILS = [
     ("ico-arch", "Vigseln",
-     "Klockan 15:30 på Kanalmagasinet i Mem.\n"
+     "Klockan 15:30 på Kanalmagasinet i Mem. "
      "Middag och dans följer på samma plats."),
     ("ico-bus", "Bussen",
-     "En buss avgår från Norrköpings centralstation klockan 14:35 och\n"
+     "En buss avgår från Norrköpings centralstation klockan 14:35 och "
      "kör tillbaka alla när festen är slut. Plats bokas i OSA:n på hemsidan."),
     ("ico-bed", "Boende",
-     "Vi rekommenderar Strand Hotell i Norrköping. Boka direkt på 011-169900\n"
-     "eller info@hotellstrand.se och få 20 % rabatt för en natt,\n"
+     "Vi rekommenderar Strand Hotell i Norrköping. Boka direkt på 011-169900 "
+     "eller info@hotellstrand.se och få 20 % rabatt för en natt, "
      "eller halva priset på andra natten. Begränsat antal rum."),
     ("ico-dress", "Klädkod",
      "Mörk kostym"),
@@ -141,9 +142,10 @@ def cmyk(rgb):
 # ============================================================== page set-up ==
 
 INCH = 72.0
-TRIM_W, TRIM_H = 5 * INCH, 7 * INCH
-BLEED = 0.125 * INCH
-SAFE = 0.25 * INCH
+CM = INCH / 2.54
+TRIM_W, TRIM_H = 12 * CM, 18.5 * CM
+BLEED = 0.3 * CM
+SAFE = 0.6 * CM
 
 PAGE_W = TRIM_W + 2 * BLEED
 PAGE_H = TRIM_H + 2 * BLEED
@@ -154,6 +156,9 @@ TX, TY = BLEED, BLEED
 SX, SY = TX + SAFE, TY + SAFE
 SW, SH = TRIM_W - 2 * SAFE, TRIM_H - 2 * SAFE
 CX = PAGE_W / 2.0
+# The front was laid out on a 6.5 in tall safe area; centre it in whatever
+# height we have now.
+FRONT_DROP = (SH - 6.5 * INCH) / 2.0
 
 
 def register_fonts():
@@ -285,6 +290,19 @@ def block(c, lines, y, font, size, color, leading, tracking=0.0,
     return y
 
 
+def wrap(c, s, font, size, width):
+    """Break s into lines no wider than width, at spaces."""
+    lines, line = [], ""
+    for word in s.split():
+        trial = (line + " " + word).strip()
+        if line and c.stringWidth(trial, font, size) > width:
+            lines.append(line)
+            line = word
+        else:
+            line = trial
+    return lines + [line] if line else lines
+
+
 def rule(c, y, width, color, weight=0.5, x=None):
     c.setStrokeColor(cmyk(color))
     c.setLineWidth(weight)
@@ -315,7 +333,7 @@ def front(c):
 
     # Wreath with the monogram set inside it
     wreath = 1.62 * INCH
-    wy = SY + SH - wreath - 0.34 * INCH
+    wy = SY + SH - wreath - 0.34 * INCH - FRONT_DROP
     art(c, "ill-wreath", (CX - wreath / 2, wy, wreath, wreath),
         RGB["olive_deep"], bg, opacity=1.0, stroke_scale=0.85)
 
@@ -368,35 +386,39 @@ def back(c):
     c.saveState()
     c.translate(PAGE_W, 0)
     c.scale(-1, 1)
-    art(c, "ill-sprig", (-0.5 * INCH, -0.42 * INCH, 1.85 * INCH, 2.0 * INCH),
+    art(c, "ill-sprig", (-0.55 * INCH, -0.62 * INCH, 1.85 * INCH, 2.0 * INCH),
         RGB["olive"], bg, opacity=0.62, stroke_scale=0.9)
     c.restoreState()
 
     y = SY + SH - 0.2 * INCH
-    text(c, BACK_LABEL, y, "Jost", 8, RGB["olive_deep"], tracking=3.2)
-    y -= 0.42 * INCH
-    text(c, BACK_TITLE, y, "Cormorant", 26, RGB["bark"])
+    if BACK_LABEL or BACK_TITLE:
+        text(c, BACK_LABEL, y, "Jost", 8, RGB["olive_deep"], tracking=3.2)
+        y -= 0.42 * INCH
+        text(c, BACK_TITLE, y, "Cormorant", 26, RGB["bark"])
+        y -= 0.2 * INCH
+    else:
+        y += 0.05 * INCH
 
-    y -= 0.2 * INCH
     div = 1.3 * INCH
     art(c, "ill-divider", (CX - div / 2, y - 0.16 * INCH, div, 0.22 * INCH),
         RGB["olive"], bg, opacity=1.0, stroke_scale=1.2)
 
     # --- the detail blocks ---
-    y -= 0.42 * INCH
-    icon = 0.3 * INCH
-    text_x = SX + 0.52 * INCH
+    y -= 0.62 * INCH
+    icon = 0.36 * INCH
+    text_x = SX + 0.58 * INCH
+    body_w = SX + SW - text_x
 
     for name, heading, body in DETAILS:
-        art(c, name, (SX + 0.02 * INCH, y - 0.055 * INCH, icon, icon),
+        art(c, name, (SX + 0.02 * INCH, y - 0.07 * INCH, icon, icon),
             RGB["olive_deep"], bg, stroke_scale=0.85, min_stroke=0.4)
-        text(c, heading, y + 0.035 * INCH, "Cormorant-Reg", 15,
+        text(c, heading, y + 0.035 * INCH, "Cormorant-Reg", 18,
              RGB["bark"], align="l", x=text_x)
-        ly = y - 0.2 * INCH
-        for line in body.split("\n"):
-            text(c, line, ly, "Jost", 8.3, RGB["bark_soft"], align="l", x=text_x)
-            ly -= 0.165 * INCH
-        y = ly - 0.32 * INCH
+        ly = y - 0.25 * INCH
+        for line in wrap(c, body, "Jost", 9.6, body_w):
+            text(c, line, ly, "Jost", 9.6, RGB["bark_soft"], align="l", x=text_x)
+            ly -= 0.19 * INCH
+        y = ly - 0.3 * INCH
 
     # --- RSVP, with the QR code ---
     y = SY + 2.0 * INCH
@@ -409,17 +431,19 @@ def back(c):
     draw_qr(c, QR_URL, qr_x, qr_y, qr_size, RGB["bark"], bg)
 
     tx = qr_x + qr_size + 0.3 * INCH
-    text(c, OSA_LABEL, y, "Jost", 8, RGB["olive_deep"], tracking=3.2, align="l", x=tx)
-    text(c, OSA_LINE, y - 0.27 * INCH, "Cormorant-Reg", 15,
+    text(c, OSA_LABEL, y, "Jost", 8.6, RGB["olive_deep"], tracking=3.2, align="l", x=tx)
+    text(c, OSA_LINE, y - 0.29 * INCH, "Cormorant-Reg", 17,
          RGB["bark"], align="l", x=tx)
-    text(c, OSA_INFO, y - 0.5 * INCH, "Jost", 8.3,
-         RGB["bark_soft"], align="l", x=tx)
-    text(c, WEBSITE, y - 0.69 * INCH, "Jost-Reg", 9, RGB["rust"],
+    ny = y - 0.53 * INCH
+    for line in wrap(c, OSA_INFO, "Jost", 9.4, SX + SW - tx):
+        text(c, line, ny, "Jost", 9.4, RGB["bark_soft"], align="l", x=tx)
+        ny -= 0.18 * INCH
+    text(c, WEBSITE, ny - 0.02 * INCH, "Jost-Reg", 10, RGB["rust"],
          tracking=0.2, align="l", x=tx)
-    ny = y - 0.94 * INCH
+    ny -= 0.27 * INCH
     for line in OSA_NOTE:
-        text(c, line, ny, "Jost", 7.6, RGB["bark_soft"], align="l", x=tx)
-        ny -= 0.15 * INCH
+        text(c, line, ny, "Jost", 8.4, RGB["bark_soft"], align="l", x=tx)
+        ny -= 0.16 * INCH
 
     text(c, NAME_A + " & " + NAME_B, SY + 0.12 * INCH, "Script", 17, RGB["rust"])
 
@@ -456,7 +480,7 @@ def main():
         c = canvas.Canvas(path, pagesize=(PAGE_W, PAGE_H))
         c.setTitle("Juandré & Axel — invitation")
         c.setAuthor("Juandré & Axel")
-        c.setSubject("5x7 wedding invitation, 0.125in bleed")
+        c.setSubject("12 x 18.5 cm wedding invitation, 3 mm bleed")
         return c
 
     # Both sides in one file, which is what Vistaprint's uploader expects...
@@ -480,9 +504,9 @@ def main():
             print("    %.2f in  %r" % (w, line))
     for path in (OUT, OUT_FRONT, OUT_BACK):
         print("wrote %s" % os.path.relpath(path, ROOT))
-    print("  page  %.3f x %.3f in  (trim %g x %g in + %g in bleed, %g in safe margin)"
-          % (PAGE_W / INCH, PAGE_H / INCH, TRIM_W / INCH, TRIM_H / INCH,
-             BLEED / INCH, SAFE / INCH))
+    print("  page  %.1f x %.1f cm  (trim %g x %g cm + %g mm bleed, %g mm safe margin)"
+          % (PAGE_W / CM, PAGE_H / CM, round(TRIM_W / CM, 2), round(TRIM_H / CM, 2),
+             round(BLEED / CM * 10, 1), round(SAFE / CM * 10, 1)))
 
 
 if __name__ == "__main__":

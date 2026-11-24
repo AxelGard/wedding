@@ -7,7 +7,7 @@
 #   make clean    # remove the PDFs
 
 PYTHON := .venv/bin/python
-PDFS   := invitation-5x7.pdf invitation-5x7-front.pdf invitation-5x7-back.pdf
+PDFS   := invitation.pdf invitation-front.pdf invitation-back.pdf
 STAMP  := .venv/.setup-done
 
 .PHONY: all rebuild preview setup clean
@@ -15,10 +15,10 @@ STAMP  := .venv/.setup-done
 all: $(PDFS)
 
 # One script writes all three PDFs; the first target stands in for the rest.
-invitation-5x7.pdf: make_cards.py svgpath.py ../index.html $(STAMP)
+invitation.pdf: make_cards.py svgpath.py ../index.html $(STAMP)
 	$(PYTHON) make_cards.py
 
-invitation-5x7-front.pdf invitation-5x7-back.pdf: invitation-5x7.pdf
+invitation-front.pdf invitation-back.pdf: invitation.pdf
 
 $(STAMP): setup.sh
 	./setup.sh
@@ -32,7 +32,7 @@ rebuild: $(STAMP)
 	$(PYTHON) make_cards.py
 
 preview: all
-	open invitation-5x7.pdf
+	open invitation.pdf
 
 clean:
 	rm -f $(PDFS)
